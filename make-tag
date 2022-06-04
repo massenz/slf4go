@@ -11,7 +11,7 @@
 
 set -eu
 
-declare -r version=$($(dirname $0)/get_version)
+declare -r version=$($(dirname $0)/get-version)
 declare -r tag="v${version}-g$(git rev-parse --short HEAD)"
 
 echo "Creating new tag ${tag}"

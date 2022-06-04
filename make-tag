@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+#  Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+#  Author: Marco Massenzio (marco@alertavert.com)
+#
+#  Usage: make-version [-f]
+#
+#  Will extract the version from the build.settings and
+#  generate a version-aware tag, including the git SHA of
+#  the commit, then push to the origin repository.
+
+set -eu
+
+declare -r version=$($(dirname $0)/get_version)
+declare -r tag="v${version}-g$(git rev-parse --short HEAD)"
+
+echo "Creating new tag ${tag}"
+
+git tag ${tag}
+git push --tags

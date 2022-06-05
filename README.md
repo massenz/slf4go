@@ -1,6 +1,6 @@
-# go-statemachine
+# Slf4Go - A simple Logging library
 
-A basic implementation of a Finite State Machine in Go
+An easy-to-use logging libraty in Go, modeled after Java's Slf4j.
 
 ![Version](https://img.shields.io/badge/Version-0.1.0-blue)
 ![Released](https://img.shields.io/badge/unreleased-green)

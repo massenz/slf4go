@@ -46,7 +46,7 @@ type Log struct {
 }
 
 func (l *Log) shouldLog(level LogLevel) bool {
-	return l.Level <= level
+	return (l.Level != NONE) && (l.Level <= level)
 }
 
 func (l *Log) Trace(format string, v ...interface{}) {

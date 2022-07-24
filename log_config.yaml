@@ -1,0 +1,17 @@
+# Logging configuration
+#
+# Created by M. Massenzio, 2022-07-23
+#
+# Example configuration file for logging: it redirects the logging to a file and
+# to the console for the Root log.
+#
+# This file will be loaded only if the SLF4GO_CONFIG_FILE environment variable is
+# set to log_config.yaml.
+
+loggers:
+  example:
+    level: 1
+    writer: /tmp/example.log
+
+  root:
+    level: 1

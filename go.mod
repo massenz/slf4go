@@ -2,8 +2,4 @@ module github.com/massenz/slf4go
 
 go 1.18
 
-require (
-	github.com/onsi/ginkgo v1.16.5
-	github.com/onsi/gomega v1.18.1
-	gopkg.in/yaml.v2 v2.4.0
-)
+require gopkg.in/yaml.v3 v3.0.1

@@ -10,8 +10,8 @@
 
 loggers:
   example:
-    level: 1
+    level: DEBUG
     writer: /tmp/example.log
 
   root:
-    level: 1
+    level: TRACE

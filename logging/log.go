@@ -18,95 +18,95 @@
 package logging
 
 import (
-    "fmt"
-    "io"
-    "log"
-    "os"
+	"fmt"
+	"io"
+	"log"
+	"os"
 )
 
 const (
-    TRACE = iota
-    DEBUG
-    INFO
-    WARN
-    ERROR
-    NONE // To entirely disable logging for the Logger
+	TRACE = iota
+	DEBUG
+	INFO
+	WARN
+	ERROR
+	NONE // To entirely disable logging for the Logger
 
-    DefaultLevel = INFO
-    DefaultFlags = log.Lmsgprefix | log.Ltime | log.Ldate | log.Lshortfile
+	DefaultLevel = INFO
+	DefaultFlags = log.Lmsgprefix | log.Ltime | log.Ldate | log.Lshortfile
 )
 
 type LogLevel = int8
 
 type Log struct {
-    *log.Logger
-    Level LogLevel
-    Name  string
+	*log.Logger
+	Level LogLevel
+	Name  string
 }
 
 func (l *Log) shouldLog(level LogLevel) bool {
-    return (l.Level != NONE) && (l.Level <= level)
+	return (l.Level != NONE) && (l.Level <= level)
 }
 
 func (l *Log) Trace(format string, v ...interface{}) {
-    if l.shouldLog(TRACE) {
-        format = l.Name + "[TRACE] " + format
-        l.Output(2, fmt.Sprintf(format, v...))
-    }
+	if l.shouldLog(TRACE) {
+		format = l.Name + "[TRACE] " + format
+		l.Output(2, fmt.Sprintf(format, v...))
+	}
 }
 
 func (l *Log) Debug(format string, v ...interface{}) {
-    if l.shouldLog(DEBUG) {
-        format = l.Name + "[DEBUG] " + format
-        l.Output(2, fmt.Sprintf(format, v...))
-    }
+	if l.shouldLog(DEBUG) {
+		format = l.Name + "[DEBUG] " + format
+		l.Output(2, fmt.Sprintf(format, v...))
+	}
 }
 
 func (l *Log) Info(format string, v ...interface{}) {
-    if l.shouldLog(INFO) {
-        format = l.Name + "[INFO] " + format
-        l.Output(2, fmt.Sprintf(format, v...))
-    }
+	if l.shouldLog(INFO) {
+		format = l.Name + "[INFO] " + format
+		l.Output(2, fmt.Sprintf(format, v...))
+	}
 }
 
 func (l *Log) Warn(format string, v ...interface{}) {
-    if l.shouldLog(WARN) {
-        format = l.Name + "[WARN] " + format
-        l.Output(2, fmt.Sprintf(format, v...))
-    }
+	if l.shouldLog(WARN) {
+		format = l.Name + "[WARN] " + format
+		l.Output(2, fmt.Sprintf(format, v...))
+	}
 }
 
 func (l *Log) Error(format string, v ...interface{}) {
-    if l.shouldLog(ERROR) {
-        format = l.Name + "[ERROR] " + format
-        l.Output(2, fmt.Sprintf(format, v...))
-    }
+	if l.shouldLog(ERROR) {
+		format = l.Name + "[ERROR] " + format
+		l.Output(2, fmt.Sprintf(format, v...))
+	}
 }
 
 func (l *Log) Fatal(err error) {
-    l.Output(2, fmt.Sprintf("[FATAL] %s", err.Error()))
-    os.Exit(1)
+	l.Output(2, fmt.Sprintf("[FATAL] %s", err.Error()))
+	os.Exit(1)
 }
 
 func NewLog(name string) *Log {
-    var writer io.Writer
-    config := GetLoggerConfig(name)
-    if config.Writer == "console" {
-        writer = os.Stdout
-    } else if config.Writer == "stderr" || config.Writer == "" {
-        writer = os.Stderr
-    } else {
-        f, err := os.OpenFile(config.Writer, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-        if err != nil {
-            log.Fatalf("Failed to open log file %s: %s", config.Writer, err)
-        }
-        writer = f
-    }
-    return &Log{
-        Name:   name,
-        Logger: log.New(writer, "", DefaultFlags),
-        Level:  config.Level,
-    }
+	var writer io.Writer
+	config := GetLoggerConfig(name)
+	if config.Writer == "console" {
+		writer = os.Stdout
+	} else if config.Writer == "stderr" || config.Writer == "" {
+		writer = os.Stderr
+	} else {
+		f, err := os.OpenFile(config.Writer, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatalf("Failed to open log file %s: %s", config.Writer, err)
+		}
+		writer = f
+	}
+	return &Log{
+		Name:   name,
+		Logger: log.New(writer, "", DefaultFlags),
+		Level:  UnmarshalLevel(config.Level),
+	}
 }
 
 // RootLog is the default log, it needs to be initialized after the init() function,
@@ -115,5 +115,5 @@ var RootLog *Log
 
 // A Loggable type is one that has a Log and exposes it to its clients
 type Loggable interface {
-    SetLogLevel(level LogLevel)
+	SetLogLevel(level LogLevel)
 }

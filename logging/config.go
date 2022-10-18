@@ -19,7 +19,6 @@ package logging
 
 import (
 	"errors"
-	"fmt"
 	"gopkg.in/yaml.v3"
 	"os"
 	"strings"
@@ -78,8 +77,6 @@ func init() {
 		configDir  string
 		configFile string
 	)
-
-	fmt.Println("[INFO] Initializing logging system...")
 	configDir, found := os.LookupEnv(LogConfigDirEnvVar)
 	if !found {
 		// FIXME: should use os.PathSeparator, but it should not be so hard.
@@ -92,12 +89,10 @@ func init() {
 	// Regardless of the configuration file, we always initialize the RootLog
 	defer func() {
 		RootLog = NewLog("root")
-		RootLog.Debug("config file %s loaded: %v", configFile, LoggersConfiguration)
 	}()
 
 	cfg, err := FindFileWithFallback(configDir, configFile)
 	if errors.Is(err, os.ErrNotExist) {
-		fmt.Printf("config file %s does not exist, using defaults\n", configFile)
 		return
 	} else if err != nil {
 		panic(err)

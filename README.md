@@ -55,3 +55,8 @@ The `example` script can be run with:
 $ go build -o bin/log-sample example.go
 $ bin/log-sample -trace
 ```
+
+# Contributing
+
+Contributions are welcome, and can be submitted via pull requests.
+Please make sure to run `go fmt` on your code before submitting.
